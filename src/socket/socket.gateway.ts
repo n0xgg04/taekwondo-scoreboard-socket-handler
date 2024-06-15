@@ -53,12 +53,42 @@ export class SocketGateway implements OnGatewayConnection {
     this.server.emit('inc_point_blue', data);
   }
 
+  @SubscribeMessage('controller_action_red')
+  handleCustomActionRed(@MessageBody() data: string) {
+    this.server.emit('action_red', data);
+  }
+
+  @SubscribeMessage('controller_action_blue')
+  handleCustomActionBlue(@MessageBody() data: string) {
+    this.server.emit('action_blue', data);
+  }
+
   @SubscribeMessage('controller_sync_time')
   handleSync(@ConnectedSocket() socket: Socket, @MessageBody() data: string) {
     this.server.emit('controller_sync_this', data);
   }
 
-  handleDisconnect() {
-    console.log('Disconnected');
+  @SubscribeMessage('controller_up_blue')
+  handleUpBlue(@MessageBody() data: string) {
+    this.server.emit('up_blue');
+  }
+
+  @SubscribeMessage('controller_up_red')
+  handleUpRed(@MessageBody() data: string) {
+    this.server.emit('up_red');
+  }
+
+  @SubscribeMessage('controller_change_status')
+  handleChangeStatus(
+    @ConnectedSocket() socket: Socket,
+    @MessageBody() data: string,
+  ) {
+    this.server.emit('set_status', data);
+  }
+
+  @SubscribeMessage('reset')
+  handleReset() {
+    this.server.emit('reset_all');
+    this.server.emit('set_counter', 120);
   }
 }
