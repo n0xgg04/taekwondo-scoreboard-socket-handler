@@ -73,9 +73,24 @@ export class SocketGateway implements OnGatewayConnection {
     this.server.emit('up_blue');
   }
 
+  @SubscribeMessage('controller_down_blue')
+  handleDownBlue(@MessageBody() data: string) {
+    this.server.emit('down_blue');
+  }
+
   @SubscribeMessage('controller_up_red')
   handleUpRed(@MessageBody() data: string) {
     this.server.emit('up_red');
+  }
+
+  @SubscribeMessage('controller_down_red')
+  handleDownRed(@MessageBody() data: string) {
+    this.server.emit('down_red');
+  }
+
+  @SubscribeMessage('reset_counter')
+  handleCounter(@MessageBody() data: object): void {
+    this.server.emit('set_counter', data);
   }
 
   @SubscribeMessage('controller_change_status')
@@ -86,9 +101,15 @@ export class SocketGateway implements OnGatewayConnection {
     this.server.emit('set_status', data);
   }
 
+  @SubscribeMessage('set-info')
+  handleSetInfo(
+    @ConnectedSocket() socket: Socket,
+    @MessageBody() data: object,
+  ) {
+    this.server.emit('set_info', data);
+  }
   @SubscribeMessage('reset')
   handleReset() {
     this.server.emit('reset_all');
-    this.server.emit('set_counter', 120);
   }
 }

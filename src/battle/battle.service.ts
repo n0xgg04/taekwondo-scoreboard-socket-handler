@@ -1,5 +1,4 @@
 import { Injectable } from '@nestjs/common';
-import { SocketGateway } from '../socket/socket.gateway';
 
 @Injectable()
 export class BattleService {
